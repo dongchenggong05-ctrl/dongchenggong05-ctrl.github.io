@@ -256,15 +256,14 @@ window.profileData = {
       description: "记录 AI 创意落地案例、商业化方向和个人机会判断。",
       status: "已完成"
     },
-    {
-    date："2026-05-30",
-      title："五金仓库管理系统",
-      type："AI工具落地",
-      track："codex",
-      description："从真实工作场景出发，用Ai和Codex辅助开发的本地仓库管理系统，解决出入库混乱、库存不清、部门统计难等问题。",
-      status："已完成",
-      featured：true,
-      isCaseStudy：true
-    }
+  {
+    date: "2026-05-30",
+    title: "五金仓库管理系统",
+    type: "AI工具落地",
+    track: "codex",
+    description: "从真实工作场景出发，用AI和Codex辅助开发的本地仓库管理系统，解决出入库混乱、库存不清、部门统计难等问题。",
+    status: "已完成",
+    featured: true,
+    isCaseStudy: true
   ]
 };
