@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>成长仪表盘 | San</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <header class="site-header">
+      <a class="brand" href="./index.html">San</a>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="./index.html">Home</a>
+        <a href="./portfolio.html">作品集</a>
+        <a href="./dashboard.html">成长仪表盘</a>
+        <a href="./archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero dashboard-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Growth Dashboard</p>
+          <h1 class="dashboard-title">成长仪表盘</h1>
+          <p class="dashboard-subtitle">主线目标：成为 AI 创意落地型创意策划 / 创意总监</p>
+          <p class="dashboard-spirit">先保持最小可用，只看关键进度和下一步动作。</p>
+          <div class="hero-actions">
+            <a href="./portfolio.html" class="button primary">查看作品集</a>
+            <a href="./index.html" class="button secondary">返回首页</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="主线成长进度">
+          <div class="panel-topline">
+            <span>主线进度</span>
+            <strong id="mainProgressValue">0%</strong>
+          </div>
+          <div class="progress-track">
+            <span id="mainProgressBar" class="progress-bar"></span>
+          </div>
+          <dl class="hero-stats">
+            <div>
+              <dt>当前阶段</dt>
+              <dd id="growthStage">工具熟悉期</dd>
+            </div>
+            <div>
+              <dt>本周推进</dt>
+              <dd id="weeklyCompletion">0/0</dd>
+            </div>
+            <div>
+              <dt>已沉淀作品</dt>
+              <dd id="completedWorks">0</dd>
+            </div>
+            <div>
+              <dt>主线经验</dt>
+              <dd id="totalXp">0</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="section">
+        <div class="next-action-panel">
+          <div>
+            <p class="eyebrow">Next Action</p>
+            <h2>下一步最重要动作</h2>
+            <p>先把 3 个代表项目补成可展示卡片：截图、问题、方案、结果和下一步。</p>
+          </div>
+          <a href="./portfolio.html" class="button primary">去看作品集</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archive | AI Creative Builder</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="archive">
+    <header class="site-header">
+      <a class="brand" href="./index.html">San</a>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="./index.html">Home</a>
+        <a href="./portfolio.html">作品集</a>
+        <a href="./dashboard.html">成长仪表盘</a>
+        <a href="./about.html">About</a>
+        <a href="./video-works.html">Video Works</a>
+        <a href="./codex-projects.html">Codex Projects</a>
+        <a href="./aigc-experiments.html">AIGC Experiments</a>
+        <a href="./insights.html">Insights</a>
+        <a href="./archive.html">Archive</a>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-hero">
+        <p class="eyebrow">Archive Center</p>
+        <h1>归档中心</h1>
+        <p class="hero-text">集中记录所有作品、项目、实验和输出，作为成长型简历的证据库。</p>
+      </section>
+      <section class="section">
+        <div class="archive-table-wrap">
+          <table class="archive-table">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>标题</th>
+                <th>类型</th>
+                <th>说明</th>
+                <th>经验值</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody id="archiveRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
