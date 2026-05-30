@@ -263,7 +263,7 @@ window.profileData = {
       track:"codex“，
       description:"从真实工作场景出发，用Ai和Codex辅助开发的本地仓库管理系统，解决出入库混乱、库存不清、部门统计难等问题。“，
       status:"已完成“，
-      featured:true，
+      featured:true,
       isCaseStudy:true
     }
   ]
