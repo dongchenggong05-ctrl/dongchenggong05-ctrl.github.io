@@ -258,11 +258,11 @@ window.profileData = {
     },
     {
     date："2026-05-30",
-      title："五金仓库管理系统“,
+      title："五金仓库管理系统",
       type："AI工具落地",
-      track："codex“,
-      description："从真实工作场景出发，用Ai和Codex辅助开发的本地仓库管理系统，解决出入库混乱、库存不清、部门统计难等问题。“,
-      status："已完成“,
+      track："codex",
+      description："从真实工作场景出发，用Ai和Codex辅助开发的本地仓库管理系统，解决出入库混乱、库存不清、部门统计难等问题。",
+      status："已完成",
       featured：true,
       isCaseStudy：true
     }
