@@ -265,5 +265,6 @@ window.profileData = {
     status: "已完成",
     featured: true,
     isCaseStudy: true
+  }
   ]
 };
