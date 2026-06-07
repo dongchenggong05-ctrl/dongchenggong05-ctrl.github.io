@@ -1,4 +1,4 @@
-const data = window.profileData;
+let data = null;
 
 const page = document.body.dataset.page;
 const currentTrackId = document.body.dataset.track;
@@ -50,13 +50,19 @@ const sumTaskXp = (trackId) => {
     .reduce((total, record) => total + (record.earnedXp ?? record.xp ?? 0), 0);
 };
 
-const getTotalXp = () => sumWorkXp(data.works) + sumTaskXp();
+const getArchiveRecords = () => data.archiveRecords || data.works || [];
+
+const getWorks = () => data.works || getArchiveRecords();
+
+const getTotalXp = () => sumWorkXp(getWorks()) + sumTaskXp();
 
 const getTrack = (trackId) => data.tracks.find((track) => track.id === trackId);
 
-const getTrackWorks = (trackId) => data.works.filter((work) => work.track === trackId);
+const getTrackWorks = (trackId) => getWorks().filter((work) => work.track === trackId);
 
 const getTrackXp = (trackId) => sumWorkXp(getTrackWorks(trackId)) + sumTaskXp(trackId);
+
+const getTrackProgressLabel = (trackId) => getTrack(trackId)?.progressLabel || "能力进度";
 
 const sortByDateDesc = (items) => [...items].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -123,17 +129,31 @@ const statusClass = (status) => {
   return "draft";
 };
 
+const formatContribution = (work) => {
+  const label = getTrackProgressLabel(work.track);
+  if (work.status !== "已完成") return `${label}待完成后计入`;
+  return `${label}贡献 +${getWorkXp(work)}`;
+};
+
 const workCard = (work) => `
   <article class="work-card">
     <div class="work-meta">
       <span>${work.date}</span>
-      <span class="status ${statusClass(work.status)}">${work.status}</span>
+      <span class="work-type">${work.type}</span>
     </div>
     <h3>${work.title}</h3>
+    <div class="work-tags">
+      <span class="status ${statusClass(work.status)}">${work.status}</span>
+      <span class="work-contribution">${formatContribution(work)}</span>
+    </div>
     <p>${work.description}</p>
-    <strong>+${getWorkXp(work)} 经验值</strong>
+    <strong>${work.status === "已完成" ? "已计入当前阶段沉淀" : "待完成后计入能力进度"}</strong>
   </article>
 `;
+
+const matchesWorkType = (work, types) => {
+  return types.some((type) => work.type === type || work.type.startsWith(`${type} /`));
+};
 
 const initGalaxyBackground = () => {
   const canvas = document.createElement("canvas");
@@ -197,7 +217,7 @@ const initIntro = () => {
   const canvas = document.querySelector("#introCanvas");
   const skipButton = document.querySelector("#introSkip");
   const welcomeBanner = document.querySelector("#welcomeBanner");
-  if (!introScreen || !canvas || !skipButton) return;
+  if (!introScreen || !canvas) return;
 
   const ctx = canvas.getContext("2d");
   const particles = [];
@@ -205,7 +225,9 @@ const initIntro = () => {
   let height = 0;
   let startedAt = performance.now();
   let introReady = false;
+  let hasEntered = false;
   let animationFrame = null;
+  let autoEnterTimer = null;
 
   // LOCKED INTRO: quiet golden galaxy dots slowly gathering into serif "san"; only micro-tune density, size, timing, or button style.
   const introWord = "san";
@@ -339,37 +361,39 @@ const initIntro = () => {
     if (progress >= 1 && !introReady) {
       introReady = true;
       introScreen.classList.add("is-ready");
+      window.setTimeout(enterDashboard, 420);
     }
 
     animationFrame = requestAnimationFrame(animate);
   };
 
   const enterDashboard = () => {
+    if (hasEntered) return;
+    hasEntered = true;
     introScreen.classList.add("is-hidden");
     document.body.classList.remove("intro-active");
     welcomeBanner?.classList.add("is-visible");
     if (animationFrame) cancelAnimationFrame(animationFrame);
+    if (autoEnterTimer) window.clearTimeout(autoEnterTimer);
   };
 
   document.body.classList.add("intro-active");
   resizeCanvas();
   animationFrame = requestAnimationFrame(animate);
+  autoEnterTimer = window.setTimeout(enterDashboard, duration + 620);
 
   window.addEventListener("resize", resizeCanvas);
-  skipButton.addEventListener("click", (event) => {
+  skipButton?.addEventListener("click", (event) => {
     event.stopPropagation();
     enterDashboard();
-  });
-  introScreen.addEventListener("click", () => {
-    if (introReady) enterDashboard();
   });
 };
 
 const renderHero = () => {
   const totalXp = getTotalXp();
   const mainPercent = formatPercent(totalXp, data.mainGoal.targetXp);
-  const completedWorks = data.works.filter((work) => work.status === "已完成").length;
-  const activeProjects = data.works.filter((work) => work.status === "正在推进").length;
+  const completedWorks = getWorks().filter((work) => work.status === "已完成").length;
+  const activeProjects = getWorks().filter((work) => work.status === "正在推进").length;
   const growthStage = getGrowthStage(totalXp);
 
   document.querySelector("#mainProgressValue").textContent = `${mainPercent}%`;
@@ -379,6 +403,92 @@ const renderHero = () => {
   document.querySelector("#totalXp").textContent = totalXp;
   document.querySelector("#growthStage").textContent = growthStage.title;
   document.querySelector("#weeklyCompletion").textContent = getWeeklyCompletion();
+};
+
+const renderLandingHero = () => {
+  const landingGoal = document.querySelector("#landingGoal");
+  const landingIntro = document.querySelector("#landingIntro");
+  const landingMainProgressValue = document.querySelector("#landingMainProgressValue");
+  const landingMainProgressBar = document.querySelector("#landingMainProgressBar");
+  const landingGrowthStage = document.querySelector("#landingGrowthStage");
+  const landingCompletedWorks = document.querySelector("#landingCompletedWorks");
+  const landingActiveProjects = document.querySelector("#landingActiveProjects");
+  const landingWeeklyCompletion = document.querySelector("#landingWeeklyCompletion");
+
+  if (
+    !landingGoal ||
+    !landingIntro ||
+    !landingMainProgressValue ||
+    !landingMainProgressBar ||
+    !landingGrowthStage ||
+    !landingCompletedWorks ||
+    !landingActiveProjects ||
+    !landingWeeklyCompletion
+  ) {
+    return;
+  }
+
+  const totalXp = getTotalXp();
+  const mainPercent = formatPercent(totalXp, data.mainGoal.targetXp);
+  const completedWorks = getWorks().filter((work) => work.status === "已完成").length;
+  const activeProjects = data.portfolioProjects.filter((project) => !project.status.includes("已完成")).length;
+  const growthStage = getGrowthStage(totalXp);
+
+  landingGoal.textContent = data.profile.goal;
+  landingIntro.textContent = data.profile.intro;
+  landingMainProgressValue.textContent = `${mainPercent}%`;
+  landingMainProgressBar.style.width = `${mainPercent}%`;
+  landingGrowthStage.textContent = growthStage.title;
+  landingCompletedWorks.textContent = completedWorks;
+  landingActiveProjects.textContent = activeProjects;
+  landingWeeklyCompletion.textContent = getWeeklyCompletion();
+};
+
+const renderLandingProgress = () => {
+  const landingProgressGrid = document.querySelector("#landingProgressGrid");
+  if (!landingProgressGrid) return;
+
+  landingProgressGrid.innerHTML = data.tracks
+    .map((track) => {
+      const xp = getTrackXp(track.id);
+      const percent = formatPercent(xp, track.targetXp);
+      const completedCount = getTrackWorks(track.id).filter((work) => work.status === "已完成").length;
+
+      return `
+        <a class="progress-card landing-progress-card" href="${track.href}">
+          <div class="card-heading">
+            <span>${track.progressLabel}</span>
+            <strong>${percent}%</strong>
+          </div>
+          <h3>${track.title}</h3>
+          <div class="progress-track">
+            <span class="progress-bar" style="width: ${percent}%"></span>
+          </div>
+          <p>${completedCount} 项已完成</p>
+        </a>
+      `;
+    })
+    .join("");
+};
+
+const renderLandingProjects = () => {
+  const landingProjectList = document.querySelector("#landingProjectList");
+  if (!landingProjectList) return;
+
+  landingProjectList.innerHTML = data.portfolioProjects
+    .map(
+      (project) => `
+        <article class="list-item landing-project-item">
+          <div>
+            <span>${project.type}</span>
+            <h3>${project.title}</h3>
+            <p>${project.nextStep}</p>
+          </div>
+          <span class="status ${project.status.includes("规划") ? "draft" : "active"}">${project.status}</span>
+        </article>
+      `
+    )
+    .join("");
 };
 
 const renderTasks = () => {
@@ -540,7 +650,7 @@ const renderRecentUpdates = () => {
   const recentUpdates = document.querySelector("#recentUpdates");
   if (!recentUpdates) return;
 
-  recentUpdates.innerHTML = sortByDateDesc(data.works)
+  recentUpdates.innerHTML = sortByDateDesc(getWorks())
     .slice(0, 4)
     .map(
       (work) => `
@@ -560,7 +670,7 @@ const renderDashboardArchive = () => {
   const dashboardArchive = document.querySelector("#dashboardArchive");
   if (!dashboardArchive) return;
 
-  dashboardArchive.innerHTML = sortByDateDesc(data.works)
+  dashboardArchive.innerHTML = sortByDateDesc(getArchiveRecords())
     .slice(0, 5)
     .map(
       (work) => `
@@ -580,7 +690,7 @@ const renderFeaturedWorks = () => {
   const featuredWorks = document.querySelector("#featuredWorks");
   if (!featuredWorks) return;
 
-  const works = data.works.filter((work) => work.featured).slice(0, 3);
+  const works = getWorks().filter((work) => work.featured).slice(0, 3);
   featuredWorks.innerHTML = works.map(workCard).join("");
 };
 
@@ -665,14 +775,15 @@ const renderPortfolio = () => {
 
   if (portfolioWorks) {
     const groups = [
-      { title: "视频作品", types: ["视频作品"] },
+      { title: "AIGC 视频作品", types: ["视频作品"] },
       { title: "Codex 小工具", types: ["Codex 小工具"] },
-      { title: "AIGC 实验", types: ["AIGC 创意实验"] }
+      { title: "视觉表达实验", types: ["AIGC 创意实验"] },
+      { title: "读书/行业输出", types: ["读书/行业输出"] }
     ];
 
     portfolioWorks.innerHTML = groups
       .map((group) => {
-        const works = data.works.filter((work) => group.types.includes(work.type));
+        const works = sortByDateDesc(getWorks().filter((work) => matchesWorkType(work, group.types)));
         const cards = works.length ? works.map(workCard).join("") : `<p class="empty">这里还没有归档作品。</p>`;
 
         return `
@@ -689,7 +800,7 @@ const renderPortfolio = () => {
   }
 
   if (portfolioCases) {
-    const cases = data.works.filter((work) => work.isCaseStudy);
+    const cases = getWorks().filter((work) => work.isCaseStudy);
     portfolioCases.innerHTML = cases.length ? cases.map(workCard).join("") : `<p class="empty">完整案例会在这里展示。</p>`;
   }
 };
@@ -721,53 +832,103 @@ const renderTrackPage = () => {
 };
 
 const renderArchive = () => {
-  const archiveRows = document.querySelector("#archiveRows");
-  if (!archiveRows) return;
+  const archiveSummary = document.querySelector("#archiveSummary");
+  const archiveRecords = document.querySelector("#archiveRecords");
+  if (!archiveRecords) return;
 
-  archiveRows.innerHTML = sortByDateDesc(data.works)
+  const records = sortByDateDesc(getArchiveRecords());
+
+  if (archiveSummary) {
+    const doneCount = records.filter((record) => record.status === "已完成").length;
+    const activeCount = records.filter((record) => record.status === "正在推进").length;
+
+    archiveSummary.innerHTML = `
+      <article class="info-card archive-summary-card">
+        <h3>归档总数</h3>
+        <p>${records.length} 条已记录内容，覆盖作品、工具、实验与输出。</p>
+      </article>
+      <article class="info-card archive-summary-card">
+        <h3>已完成内容</h3>
+        <p>${doneCount} 条内容已沉淀为可展示证据。</p>
+      </article>
+      <article class="info-card archive-summary-card">
+        <h3>进行中内容</h3>
+        <p>${activeCount} 条内容仍在推进，方便后续持续补齐。</p>
+      </article>
+    `;
+  }
+
+  archiveRecords.innerHTML = records
     .map(
       (work) => `
-        <tr>
-          <td>${work.date}</td>
-          <td>${work.title}</td>
-          <td>${work.type}</td>
-          <td>${work.description}</td>
-          <td>+${getWorkXp(work)}</td>
-          <td><span class="status ${statusClass(work.status)}">${work.status}</span></td>
-        </tr>
+        <article class="archive-record">
+          <div class="archive-record-date">
+            <span>${work.date}</span>
+          </div>
+          <div class="archive-record-body">
+            <div class="archive-record-head">
+              <div>
+                <p class="archive-record-label">${work.type}</p>
+                <h3>${work.title}</h3>
+              </div>
+              <span class="status ${statusClass(work.status)}">${work.status}</span>
+            </div>
+            <p class="archive-record-description">${work.description}</p>
+            <div class="archive-record-meta">
+              <span>${getTrackProgressLabel(work.track)}</span>
+              <strong>${formatContribution(work)}</strong>
+            </div>
+          </div>
+        </article>
       `
     )
     .join("");
 };
 
-initGalaxyBackground();
+const loadData = async () => {
+  if (window.profileData) return window.profileData;
+  if (window.profileDataPromise) return window.profileDataPromise;
+  return null;
+};
 
-if (page === "landing") {
-  initIntro();
-}
+const initApp = async () => {
+  data = await loadData();
+  if (!data) return;
 
-if (page === "dashboard") {
-  renderHero();
-  renderProgress();
-  renderTasks();
-  renderModules();
-  renderRecentUpdates();
-  renderFeaturedWorks();
-  renderDashboardArchive();
-}
+  initGalaxyBackground();
 
-if (page === "portfolio") {
-  renderPortfolio();
-}
+  if (page === "landing") {
+    renderLandingHero();
+    renderLandingProgress();
+    renderLandingProjects();
+    initIntro();
+  }
 
-if (page === "about") {
-  renderAbout();
-}
+  if (page === "dashboard") {
+    renderHero();
+    renderProgress();
+    renderTasks();
+    renderModules();
+    renderRecentUpdates();
+    renderFeaturedWorks();
+    renderDashboardArchive();
+  }
 
-if (page === "track") {
-  renderTrackPage();
-}
+  if (page === "portfolio") {
+    renderPortfolio();
+  }
 
-if (page === "archive") {
-  renderArchive();
-}
+  if (page === "about") {
+    renderAbout();
+  }
+
+  if (page === "track") {
+    renderTrackPage();
+  }
+
+  if (page === "archive") {
+    renderArchive();
+  }
+};
+
+initApp();

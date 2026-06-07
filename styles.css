@@ -254,8 +254,8 @@ a {
 
 .landing-hero {
   width: 100%;
-  max-width: 920px;
-  text-align: center;
+  max-width: 1180px;
+  min-width: 0;
 }
 
 .landing-hero h1 {
@@ -278,10 +278,120 @@ a {
 }
 
 .landing-subtitle {
-  max-width: 720px;
-  margin: 0 auto;
+  max-width: 640px;
+  margin: 0;
   color: var(--soft);
   font-size: clamp(16px, 2vw, 22px);
+  line-height: 1.7;
+}
+
+.landing-hero-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 18px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.landing-copy {
+  padding: 10px 0 0;
+}
+
+.landing-intro {
+  max-width: 720px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.landing-goal-block {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(10, 17, 23, 0.62);
+}
+
+.landing-goal-block span {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.landing-goal-block strong {
+  font-size: clamp(1.05rem, 2vw, 1.36rem);
+  line-height: 1.55;
+}
+
+.landing-main-panel {
+  padding: 28px;
+}
+
+.landing-stats dd {
+  font-size: clamp(1.18rem, 2vw, 1.66rem);
+}
+
+.landing-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 18px;
+  margin-top: 18px;
+  min-width: 0;
+}
+
+.landing-block {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(10, 17, 23, 0.64);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(18px);
+}
+
+.landing-section-heading {
+  margin-bottom: 18px;
+}
+
+.landing-section-heading .eyebrow {
+  margin-bottom: 10px;
+}
+
+.landing-section-heading h2 {
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+}
+
+.landing-progress-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.landing-progress-card {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.landing-progress-card h3 {
+  min-height: 0;
+}
+
+.landing-project-list {
+  display: grid;
+  gap: 12px;
+}
+
+.landing-project-item {
+  min-width: 0;
+  padding: 18px;
+}
+
+.landing-project-item p {
+  margin: 10px 0 0;
+  color: var(--muted);
   line-height: 1.7;
 }
 
@@ -289,7 +399,7 @@ a {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
-  margin-top: 42px;
+  margin-top: 18px;
   text-align: left;
 }
 
@@ -500,6 +610,17 @@ h2 {
 
 .section-heading {
   margin-bottom: 24px;
+}
+
+.section-intro {
+  max-width: 760px;
+  margin-bottom: 22px;
+}
+
+.section-intro p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.8;
 }
 
 .compact-heading {
@@ -844,21 +965,164 @@ h2 {
 }
 
 .work-card {
-  min-height: 190px;
-  padding: 18px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-height: 220px;
+  padding: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.035);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.work-meta {
+  align-items: flex-start;
+}
+
+.work-meta span:first-child {
+  font-size: 0.82rem;
 }
 
 .work-card h3 {
-  margin: 18px 0 10px;
-  font-size: 1.05rem;
-  line-height: 1.45;
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.5;
+}
+
+.work-type,
+.work-contribution {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: var(--soft);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.work-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.work-type {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.work-contribution {
+  border-color: rgba(231, 198, 152, 0.18);
+  color: rgba(231, 198, 152, 0.92);
+  background: rgba(231, 198, 152, 0.06);
+}
+
+.work-card p {
+  min-height: 74px;
+  margin-bottom: 0;
 }
 
 .work-card strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.archive-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.archive-summary-card {
+  min-height: 0;
+}
+
+.archive-intro {
+  margin-bottom: 18px;
+}
+
+.archive-record-list {
+  display: grid;
+  gap: 14px;
+}
+
+.archive-record {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(10, 17, 23, 0.72);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(18px);
+}
+
+.archive-record-date {
+  display: flex;
+  align-items: flex-start;
+  padding: 22px 20px;
+  border-right: 1px solid var(--line);
+  color: rgba(200, 208, 216, 0.72);
+  font-size: 0.84rem;
+}
+
+.archive-record-body {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+}
+
+.archive-record-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.archive-record-label {
+  margin: 0 0 10px;
   color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.archive-record h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.45;
+}
+
+.archive-record-description {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.archive-record-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.archive-record-meta span {
+  color: rgba(200, 208, 216, 0.74);
+  font-size: 0.84rem;
+}
+
+.archive-record-meta strong {
+  color: rgba(231, 198, 152, 0.92);
+  font-size: 0.88rem;
 }
 
 .status {
@@ -880,41 +1144,10 @@ h2 {
   color: var(--warn);
 }
 
-.archive-table-wrap {
-  overflow-x: auto;
-}
-
-.archive-table {
-  width: 100%;
-  min-width: 860px;
-  border-collapse: collapse;
-}
-
-.archive-table th,
-.archive-table td {
-  padding: 16px;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  vertical-align: top;
-}
-
-.archive-table th {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.archive-table td {
-  color: var(--soft);
-  line-height: 1.55;
-}
-
-.archive-table tr:last-child td {
-  border-bottom: 0;
-}
-
 @media (max-width: 920px) {
   .hero,
+  .landing-hero-top,
+  .landing-dashboard-grid,
   .landing-actions,
   .project-grid,
   .progress-grid,
@@ -922,11 +1155,25 @@ h2 {
   .task-grid,
   .module-grid,
   .info-grid,
+  .archive-summary-grid,
   .portfolio-info-grid,
   .work-grid,
   .split-section,
   .feature-grid {
     grid-template-columns: 1fr;
+  }
+
+  .archive-record {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-record-date {
+    padding: 18px 20px 0;
+    border-right: 0;
+  }
+
+  .archive-record-body {
+    padding-top: 14px;
   }
 
   .hero {
@@ -946,6 +1193,11 @@ h2 {
 }
 
 @media (max-width: 620px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   .intro-skip {
     top: 16px;
     right: 16px;
@@ -990,7 +1242,42 @@ h2 {
   }
 
   .landing-shell {
+    width: 100%;
+    max-width: 100vw;
     padding: 32px 20px;
+    overflow-x: hidden;
+  }
+
+  .landing-hero,
+  .landing-copy,
+  .landing-main-panel,
+  .landing-block,
+  .landing-actions,
+  .entry-card {
+    width: calc(100vw - 40px);
+    max-width: calc(100vw - 40px);
+  }
+
+  .landing-progress-card,
+  .landing-project-item {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .landing-block,
+  .landing-goal-block {
+    padding: 16px;
+  }
+
+  .landing-progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-goal-block strong,
+  .landing-subtitle,
+  .landing-section-heading h2,
+  .landing-project-item p {
+    overflow-wrap: anywhere;
   }
 
   .contact-panel {
@@ -1001,5 +1288,27 @@ h2 {
   .next-action-panel {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .work-card {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .work-meta,
+  .archive-record-head,
+  .archive-record-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .work-card p {
+    min-height: 0;
+  }
+
+  .archive-record-date,
+  .archive-record-body {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }

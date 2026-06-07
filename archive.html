@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Archive | AI Creative Builder</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body data-page="archive">
@@ -29,21 +30,11 @@
         <p class="hero-text">集中记录所有作品、项目、实验和输出，作为成长型简历的证据库。</p>
       </section>
       <section class="section">
-        <div class="archive-table-wrap">
-          <table class="archive-table">
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>标题</th>
-                <th>类型</th>
-                <th>说明</th>
-                <th>经验值</th>
-                <th>状态</th>
-              </tr>
-            </thead>
-            <tbody id="archiveRows"></tbody>
-          </table>
+        <div id="archiveSummary" class="archive-summary-grid"></div>
+        <div class="section-intro archive-intro">
+          <p>这里不只是列表，而是阶段性项目记录。每条归档都保留时间、类型、状态与简要说明，方便后续扩写成案例或复盘。</p>
         </div>
+        <div id="archiveRecords" class="archive-record-list"></div>
       </section>
     </main>
 

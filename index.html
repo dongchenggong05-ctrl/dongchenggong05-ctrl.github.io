@@ -4,31 +4,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>San | AI Creative Builder</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css?v=v08-gold-san" />
   </head>
   <body data-page="landing">
-    <section class="intro-screen" id="introScreen" aria-label="San intro">
+    <section class="intro-screen" id="introScreen" aria-label="San brand intro">
       <canvas id="introCanvas" aria-hidden="true"></canvas>
-      <button class="intro-skip" id="introSkip" type="button">Skip / 直接进入</button>
-      <div class="intro-enter" id="introEnter">Click to enter</div>
     </section>
 
     <main class="landing-shell">
       <section class="landing-hero" aria-label="San AI Creative Builder">
-        <p class="eyebrow">San / AI Creative Builder</p>
-        <h1>San</h1>
-        <p class="landing-title">AI Creative Builder</p>
-        <p class="landing-subtitle">用 AI 把创意变成作品、工具与可交付方案</p>
+        <div class="landing-hero-top">
+          <div class="landing-copy">
+            <p class="eyebrow">Creative Dashboard / Home</p>
+            <h1>San</h1>
+            <p class="landing-title">AI Creative Builder</p>
+            <p class="landing-subtitle">用 AI 把创意变成作品、工具与可交付方案</p>
+            <p class="landing-intro" id="landingIntro"></p>
+            <div class="landing-goal-block">
+              <span>主线目标</span>
+              <strong id="landingGoal"></strong>
+            </div>
+            <div class="hero-actions">
+              <a href="./portfolio.html" class="button primary">查看作品集</a>
+              <a href="./dashboard.html" class="button secondary">查看完整仪表盘</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel landing-main-panel" aria-label="首页主线能力进度">
+            <div class="panel-topline">
+              <span>主线能力进度</span>
+              <strong id="landingMainProgressValue">0%</strong>
+            </div>
+            <div class="progress-track">
+              <span id="landingMainProgressBar" class="progress-bar"></span>
+            </div>
+            <dl class="hero-stats landing-stats">
+              <div>
+                <dt>当前阶段</dt>
+                <dd id="landingGrowthStage">工具熟悉期</dd>
+              </div>
+              <div>
+                <dt>已完成作品</dt>
+                <dd id="landingCompletedWorks">0</dd>
+              </div>
+              <div>
+                <dt>当前项目</dt>
+                <dd id="landingActiveProjects">0</dd>
+              </div>
+              <div>
+                <dt>本周推进</dt>
+                <dd id="landingWeeklyCompletion">0/0</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="landing-dashboard-grid">
+          <section class="landing-block">
+            <div class="section-heading landing-section-heading">
+              <p class="eyebrow">Supporting Directions</p>
+              <h2>4 个辅助方向项目进度</h2>
+            </div>
+            <div class="progress-grid landing-progress-grid" id="landingProgressGrid"></div>
+          </section>
+
+          <section class="landing-block">
+            <div class="section-heading landing-section-heading">
+              <p class="eyebrow">Current Focus</p>
+              <h2>当前正在推进的项目</h2>
+            </div>
+            <div class="landing-project-list" id="landingProjectList"></div>
+          </section>
+        </div>
+
         <div class="landing-actions">
-          <a class="entry-card" href="portfolio.html">
-            <span>入口一</span>
+          <a class="entry-card" href="./portfolio.html">
+            <span>作品入口</span>
             <strong>进入作品集</strong>
-            <p>对外展示：个人介绍、核心能力、作品、案例与联系方式。</p>
+            <p>查看代表作品、案例说明、个人定位和合作方向。</p>
           </a>
-          <a class="entry-card" href="dashboard.html">
-            <span>入口二</span>
-            <strong>进入成长仪表盘</strong>
-            <p>内部查看：主线进度、成长阶段、今日推进与归档记录。</p>
+          <a class="entry-card" href="./dashboard.html">
+            <span>进度入口</span>
+            <strong>进入完整仪表盘</strong>
+            <p>查看更完整的成长记录、任务推进、归档和模块页入口。</p>
           </a>
         </div>
       </section>
